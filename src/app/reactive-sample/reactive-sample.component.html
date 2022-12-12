@@ -1,0 +1,87 @@
+
+<p>reactive-sample works!</p>
+
+<form [formGroup]="reactiveForm" action="" class="container mb-5">
+    <div class="row mt-3">
+        <div class="col-md-6 form-group">
+            <label for="fname" class="form-label">FirstName</label>
+            <input formControlName="firstName" type="text" id="fname" 
+            class="form-control" placeholder="Enter your firstName">
+        </div>
+        <div class="col-md-6 form-group">
+            <label for="lname" class="form-label">LastName</label>
+            <input formControlName="lastName" type="text" id="lname" 
+            class="form-control" placeholder="Enter your lastName">
+        </div>
+    </div>
+
+<!-- Address -->
+    <div class="row mt-3" formGroupName="address">
+        <div class="col-md-12 mt-3">
+            <label for="" class="form-check-inline">Choose Type</label>
+            <div class="form-check form-check-inline">
+                <input type="radio" formControlName="addressType" value="permanent" class="form-check-input" id="radio1">
+                <label for="radio1" class="form-check-label">Permanent</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input type="radio" formControlName="addressType" value="temporary" class="form-check-input" id='radio2'>
+                <label for="radio2" class="form-check-label">Temporary</label>
+            </div>
+            <label *ngIf="reactiveForm.controls['address']?.get('addressType')?.value=='temporary'" for="expDate" class="form-check-inline form-check-label">Expiry Date</label>
+            <div *ngIf="reactiveForm.controls['address']?.get('addressType')?.value=='temporary'" class="form-check form-check-inline">
+                <input type="date" formControlName="expiryDate" class="form-control">
+            </div>
+            <!-- <small class="form-check-inline form-text custome-invalid-feedback">Pick one option</small> -->
+        </div>
+        <div class="col-12 mt-3">
+            <div class="form-group">
+                <label for="addText" class="form-label">Street Address</label>
+                <input type="text" formControlName="streetAddress" class="form-control" id="addText" placeholder="enter street address">
+            </div>
+        </div>
+        <div class="col-12 mt-3">
+            <div class="row">
+                <div class="col-3">
+                    <div class="form-group">
+                        <label for="city" class="form-label">City</label>
+                        <input type="text" formControlName="city" class="form-control" id="city" placeholder="Enter city">
+                    </div>
+                </div>
+                <div class="col-3">
+                    <div class="form-group">
+                        <label for="state" class="form-label">State</label>
+                        <select formControlName="state" class="form-control form-select" id="state">
+                            <option value="" [ngValue]="null">Select State</option>
+                            <option *ngFor="let item of states" value="{{item}}">{{item}}</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-3">
+                <!-- direct way of getting/access formControl name -->
+                    <!-- <div class="form-group">
+                        <label for="zip" class="form-label">ZipCode</label>
+                        <input type="text" formControlName="zipcode" id="zip" placeholder="Enter zipCode"
+                        [ngClass]="{'form-control':true,'is-invalid':reactiveForm.controls['address'].get('zipcode')?.errors?.['required'] && reactiveForm.controls['address'].get('zipcode')?.touched , 'is-valid':reactiveForm.controls['address'].get('zipcode')?.valid}">
+                    </div> -->
+
+                <!-- getting formControl name using getter function -->
+                    <div class="form-group">
+                        <label for="zip" class="form-label">ZipCode</label>
+                        <input type="text" formControlName="zipcode" id="zip" placeholder="Enter zipcode" maxlength="5"
+                        [ngClass]="{'form-control':true,'is-invalid':zipcode?.invalid && zipcode?.touched ,'is-valid':zipcode?.valid}">
+                        <small *ngIf="zipcode?.errors?.['required']" class="form-text invalid-feedback">Field is required</small>
+                        <small *ngIf="zipcode?.errors?.['pattern']" class="form-text invalid-feedback">zipcode should be 5 digit number</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="text-end mt-3">
+            <button class="btn btn-danger mx-3" type="reset">Reset</button>
+            <button class="btn btn-success"  (click)="submitHandler()">Submit</button>
+        </div>
+    </div>
+</form>
+<hr>

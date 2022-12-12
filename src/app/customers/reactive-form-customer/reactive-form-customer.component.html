@@ -1,0 +1,37 @@
+<p>reactive-form-customer works!</p>
+
+<div class="container">
+    <form [formGroup]="addLoanTypesForm" class="col-4 form-group">
+        <label for="loanName">LoanName</label>
+        <input id="loadName" class="form-control" type="text" formControlName="loanName">
+        <div class="text-danger" *ngIf="addLoanTypesForm.get('loanName')?.invalid && addLoanTypesForm.get('loanName')?.touched">LoanName is invalid.</div>
+
+        <label for="loanType">LoanType</label>
+        <input type="text" id="loantype" class="form-control" formControlName="loanType">
+        <div class="text-danger" *ngIf="addLoanTypesForm.controls['loanType']?.invalid && addLoanTypesForm.controls['loanType']?.touched">LoanType value is invalid.</div>
+
+        <label for="loanDescription">Loan Description</label>
+        <textarea id="loanDescription" class="form-control" formControlName="loanDescription" name="" id="" cols="" rows=""></textarea>
+        <div class="text-danger" *ngIf="addLoanTypesForm.get('loanDescription')?.hasError('required') && addLoanTypesForm.get('loanDescription')?.touched">Loan Description value is invalid.</div>
+
+        <!-- <div formArrayName="users">
+            <label for="" class="form-label">Users</label>
+            <div *ngFor="let control of addLoanTypesForm.get('users')?['controls']:[]; let i = index;">
+                <input [formControlName]='i' type="text" class="form-control border border-2 border-dark">
+            </div>
+        </div> -->
+
+        <div formArrayName="users">
+            <label for="">Users</label>
+            <div *ngFor="let control of addLoanTypesForm.controls['users']?['controls']:[] let i = index;" [formGroupName]="i">
+                <input class="form-control" type="text" formControlName="name" >
+                <input class="form-control" type="text" formControlName="age" >
+                <input class="form-control" type="text" formControlName="dept" >
+            </div>
+        </div>
+
+        <button  class="btn btn-primary mt-2" [disabled]="addLoanTypesForm.invalid" (click)="addLoanType()">Add Loan Type</button>
+        <button  class="btn btn-danger mt-2" (click)="resetForm()">Reset Form using Reset function</button>
+        <button class="btn btn-danger mt-2" type="reset">Reset clear button</button>
+    </form>
+</div>

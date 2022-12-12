@@ -1,0 +1,160 @@
+<p>nested-form works!</p>
+
+<form action="" class="container mb-5" [formGroup]="nestedForm">
+  <div class="row">
+    <div class="card card-body bg-success bg-opacity-50">
+      <div class="row">
+        <div class="col-6">
+          <div class="form-group">
+            <label for="fname" class="form-label">First Name</label>
+            <input
+              type="text"
+              formControlName="firstName"
+              class="form-control"
+              id="fname"
+              placeholder="enter firstName"
+            />
+          </div>
+        </div>
+        <div class="col-6">
+          <div class="form-group">
+            <label for="lname" class="form-label">last Name</label>
+            <input
+              type="text"
+              formControlName="lastName"
+              class="form-control"
+              id="lname"
+              placeholder="enter lastName"
+            />
+          </div>
+        </div>
+        <div class="col-12">
+          <div>
+            <label class="form-label">Favourite food</label>
+          </div>
+          <div
+            class="form-check form-check-inline"
+            *ngFor="let control of fruitsArray.controls; let i = index"
+          >
+            <input
+              type="checkbox"
+              value="option1"
+              class="form-check-input"
+              id="favfood"
+            />
+            <label for="favfood" class="form-check-label">Mango</label>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Address form section -->
+  <div class="row mt-3" formArrayName="address">
+    <div
+      class="card card-body bg-info bg-opacity-50 mb-3"
+      *ngFor="let group of addressArray.controls; let i = index"
+      [formGroupName]="i"
+    >
+      <div class="row">
+        <div class="col-8">
+          <h4>Address {{ i + 1 }}</h4>
+        </div>
+        <div class="col-4 text-end">
+          <button class="btn btn-success btn-sm mx-3" (click)="addAddress()">
+            Add
+          </button>
+          <button class="btn btn-danger btn-sm" (click)="removeAddress(i)">
+            Delete
+          </button>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-12">
+          <div class="form-check">
+            <input
+              type="checkbox"
+              formControlName="primaryFlag"
+              class="form-check-input"
+              id="check1"
+            />
+            <label for="check1" class="form-check-label"
+              >Is Primary Address</label
+            >
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-12">
+          <label for="street" class="form-label">Street Address</label>
+          <input
+            type="text"
+            formControlName="streetAddress"
+            class="form-control"
+            id="street"
+            placeholder="enter street address"
+          />
+        </div>
+        <div class="col-4">
+          <label for="city" class="form-label">City</label>
+          <input
+            type="text"
+            formControlName="city"
+            class="form-control"
+            id="city"
+            placeholder="enter city"
+          />
+        </div>
+        <div class="col-4">
+          <label for="state" class="form-label">State</label>
+          <select
+            formControlName="state"
+            id="state"
+            [ngClass]="{
+              'form-control': true,
+              'form-select': true,
+              'is-invalid':
+                !group.get('state')?.valid &&
+                group.get('state')?.touched &&
+                group.get('state')?.value == '',
+              'is-valid': group.get('state')?.valid
+            }"
+          >
+            <option value="">Select State</option>
+            <option *ngFor="let state of states" [value]="state">
+              {{ state }}
+            </option>
+          </select>
+        </div>
+        <div class="col-4">
+          <label for="zip" class="form-label">ZipCode</label>
+          <input
+            type="text"
+            formControlName="zipcode"
+            class="form-control"
+            id="zip"
+            placeholder="enter zipcode"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Submit and reset button -->
+  <div class="row mt-3">
+    <div class="text-end">
+      <button type="reset" class="btn btn-danger mx-2">Reset</button>
+      <button
+        class="btn btn-success"
+        [disabled]="nestedForm.invalid"
+        (click)="submitHandler()"
+      >
+        Submit
+      </button>
+    </div>
+  </div>
+</form>
+
+<hr />
